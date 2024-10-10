@@ -1,0 +1,27 @@
+services:
+  # Service API Node.js
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: node-api
+    ports:
+      - "4000:4000"
+    environment:
+      NODE_ENV: development
+      DATABASE_HOST: postgres-db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_NAME: ${POSTGRES_DB}
+      REDIS_HOST: redis-cache
+      REDIS_PORT: ${REDIS_PORT}
+    depends_on:
+      - postgres-db
+      - redis-cache
+    networks:
+      - core-network
+
+networks:
+  core-network:
+    external: true 

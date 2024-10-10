@@ -1,0 +1,13 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "description": "API Node.js pour le projet microservices",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "prom-client": "^15.1.3"
+  }
+}

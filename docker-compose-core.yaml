@@ -1,0 +1,39 @@
+services:
+  postgres-db:
+    image: postgres:13
+    container_name: postgres-db
+    environment:
+      # POSTGRES_USER: ${POSTGRES_USER}
+      # POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    secrets:
+      - db_password
+      - db_user
+    networks:
+      - core-network
+
+  redis-cache:
+    image: redis:6.2
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    networks:
+      - core-network
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  db_user:
+    file: ./secrets/db_user.txt
+
+networks:
+  core-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
